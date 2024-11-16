@@ -5,7 +5,7 @@ package acme.demo.v1;
 import "buf/validate/validate.proto";
 import "google/api/annotations.proto";
 
-service AppCategoryService {
+service DemoService {
   rpc Create(CreateRequest) returns (CreateResponse) {
     option (google.api.http) = {
       post: "/v1/demo",
