@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+package acme.demo.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+
+service AppCategoryService {
+  rpc Create(CreateRequest) returns (CreateResponse) {
+    option (google.api.http) = {
+      post: "/v1/demo",
+      body: "*",
+    };
+  };
+  rpc Get(GetRequest) returns (GetResponse) {
+    option (google.api.http) = {
+      get: "/v1/demo/{id}",
+    };
+  };
+  rpc GetList(GetListRequest) returns (GetListResponse) {
+    option (google.api.http) = {
+      get: "/v1/demo/list",
+    };
+  };
+  rpc Update(UpdateRequest) returns (UpdateResponse) {
+    option (google.api.http) = {
+      put: "/v1/demo",
+      body: "*",
+    };
+  };
+  rpc Delete(DeleteRequest) returns (DeleteResponse) {
+    option (google.api.http) = {
+      delete: "/v1/demo/{id}",
+    };
+  };
+}
+
+message Author {
+  string id = 1;
+  string name = 2;
+}
+
+message Demo {
+  string id = 1;
+  string created_at = 2;
+  string updated_at = 3;
+
+  string title = 4;
+  string description = 5;
+  uint32 status = 6;
+  uint32 sort = 7;
+
+  Author author = 8;
+}
+
+message CreateRequest {
+  string title = 1 [(buf.validate.field).required = true];
+  string description = 2;
+  uint32 status = 3;
+  uint32 sort = 4;
+}
+message CreateResponse {
+  uint32 code = 1;
+  string message = 2;
+}
+
+message GetRequest {
+  string id = 1 [(buf.validate.field).string.uuid = true];
+}
+message GetResponse {
+  uint32 code = 1;
+  string message = 2;
+  Demo data = 3;
+}
+
+message GetList {
+  int64 total = 1;
+  repeated Demo list = 2;
+}
+message GetListRequest {
+  uint64 page = 1;
+  uint64 page_size = 2;
+  string search_key = 3;
+}
+message GetListResponse {
+  string message = 1;
+  uint32 code = 2;
+  GetList data = 3;
+}
+
+message UpdateRequest {
+  string id = 1 [(buf.validate.field).string.uuid = true];
+  string title = 2 [(buf.validate.field).required = true];
+  string description = 3;
+  uint32 status = 4;
+  uint32 sort = 5;
+}
+message UpdateResponse {
+  string message = 1;
+  uint32 code = 2;
+}
+
+message DeleteRequest {
+  string id = 1 [(buf.validate.field).string.uuid = true];
+}
+message DeleteResponse {
+  string message = 1;
+  uint32 code = 2;
+}
