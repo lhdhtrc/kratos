@@ -2,4 +2,4 @@
 - `buf dep update`
 
 ## 推送到BSR
-- `buf push`å
+- `buf push`
